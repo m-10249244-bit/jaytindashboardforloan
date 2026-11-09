@@ -1,0 +1,89 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // 0. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Helper Primitives ---
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(data) {
+      return isSignedIn() && data.ownerId == request.auth.uid;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // --- Validation Blueprints ---
+    function isValidLedger(data) {
+      return data.id is string 
+        && data.userName is string && data.userName.size() > 0 && data.userName.size() <= 100
+        && data.type in ['Installment', 'Delayed']
+        && data.totalAmount is number && data.totalAmount >= 0
+        && data.paidAmount is number && data.paidAmount >= 0
+        && data.status in ['Active', 'Settled', 'Overdue']
+        && data.ownerId is string && data.ownerId == request.auth.uid
+        && (data.shareKey == null || (data.shareKey is string && data.shareKey.size() >= 32))
+        && data.items is list
+        && data.payments is list;
+    }
+
+    // --- Collection: Ledgers ---
+    match /ledgers/{ledgerId} {
+      // Access Logic:
+      // 1. Owners have full access.
+      // 2. Public can 'get' if they know the ledgerId AND it has a shareKey.
+      //    Note: In this app, we assume the share link uses the shareKey as the lookup.
+      //    We will support both direct get (if they have the docId) and list-by-shareKey.
+      
+      allow get: if isOwner(existing()) || (existing().shareKey != null);
+      
+      allow list: if isOwner(resource.data);
+      
+      allow create: if isSignedIn() 
+        && isValidId(ledgerId) 
+        && isValidLedger(incoming())
+        && incoming().id == ledgerId
+        && incoming().updatedAt == request.time;
+
+      allow update: if isOwner(existing())
+        && isValidLedger(incoming())
+        && incoming().id == existing().id
+        && incoming().ownerId == existing().ownerId
+        && incoming().updatedAt == request.time
+        && (
+          // Action: Generic Update
+          incoming().diff(existing()).affectedKeys().hasOnly([
+            'userName', 'type', 'totalAmount', 'paidAmount', 
+            'paymentCycle', 'cycleCount', 'startDate', 'endDate', 
+            'nextPaymentDate', 'status', 'items', 'payments', 
+            'notes', 'attachments', 'updatedAt', 'shareKey'
+          ])
+        );
+
+      allow delete: if isOwner(existing());
+    }
+
+    // --- Collection: Users ---
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn();
+      allow delete: if isSignedIn();
+    }
+  }
+}

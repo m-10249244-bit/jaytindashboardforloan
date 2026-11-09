@@ -1,0 +1,7 @@
+{
+  "name": "JayTIN Private Balance Ledger",
+  "description": "An ultra high-end, private banking-style financial management system for tracking outstanding balances and installments with a minimalist glassmorphism design.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "entities": {
+    "LedgerRecord": {
+      "title": "Ledger Record",
+      "description": "Financial record for a customer tracking purchases and payments.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the record." },
+        "shareKey": { "type": "string", "description": "Shared key for public access viewing." },
+        "userName": { "type": "string", "description": "Name of the customer." },
+        "type": { "type": "string", "enum": ["Installment", "Delayed"] },
+        "totalAmount": { "type": "number" },
+        "paidAmount": { "type": "number" },
+        "paymentCycle": { "type": "string", "enum": ["Day", "Weekly", "Monthly"] },
+        "cycleCount": { "type": "number" },
+        "startDate": { "type": "string", "format": "date-time" },
+        "endDate": { "type": "string", "format": "date-time" },
+        "nextPaymentDate": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["Active", "Settled", "Overdue"] },
+        "items": { "type": "array" },
+        "payments": { "type": "array" },
+        "notes": { "type": "array" },
+        "attachments": { "type": "array" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "ownerId": { "type": "string", "description": "User ID of the record owner." }
+      },
+      "required": ["id", "userName", "type", "totalAmount", "paidAmount", "status", "ownerId"]
+    }
+  },
+  "firestore": {
+    "/ledgers/{ledgerId}": {
+      "schema": "LedgerRecord",
+      "description": "Collection of financial ledger records."
+    }
+  }
+}

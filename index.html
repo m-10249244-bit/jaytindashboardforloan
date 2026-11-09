@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>JayTIN | Premium Financial Glass System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@400;500;600;700&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['DynaPuff', 'Fredoka', 'cursive', 'sans-serif'],
+              jua: ['DynaPuff', 'Fredoka', 'cursive', 'sans-serif'],
+              bubble: ['DynaPuff', 'Fredoka', 'cursive', 'sans-serif'],
+            },
+            colors: {
+              navy: {
+                950: '#0A192F',
+                900: '#0F2C59',
+                850: '#153A6B',
+                800: '#1E3A8A',
+                700: '#1D4ED8',
+                600: '#2563EB',
+                500: '#3B82F6',
+                200: '#BFDBFE',
+                100: '#DBEAFE',
+                50: '#EFF6FF',
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        font-family: 'DynaPuff', 'Fredoka', cursive, sans-serif;
+        background-color: #EBFAFF;
+        margin: 0;
+        -webkit-font-smoothing: antialiased;
+        color: #0F2C59;
+        overflow-x: hidden;
+      }
+      .font-jua, .font-bubble {
+        font-family: 'DynaPuff', 'Fredoka', cursive, sans-serif;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        box-shadow: 0 8px 32px 0 rgba(15, 44, 89, 0.05);
+      }
+      .gold-accent {
+        color: #B8A17D;
+      }
+      .gold-glow {
+        box-shadow: inset 0 0 12px rgba(184, 161, 125, 0.08);
+      }
+      input, textarea, select {
+        color: #0F2C59 !important;
+        font-family: 'DynaPuff', 'Fredoka', cursive, sans-serif;
+        font-size: 15px !important;
+      }
+      input::placeholder, textarea::placeholder {
+        color: rgba(15, 44, 89, 0.38) !important;
+      }
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(15, 44, 89, 0.18);
+        border-radius: 12px;
+      }
+      /* Mobile touch feedback */
+      .active-scale:active {
+        transform: scale(0.96);
+        transition: transform 0.1s ease;
+      }
+      /* Hide scrollbar for tabs */
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "framer-motion": "https://esm.sh/framer-motion@^12.23.26",
+    "@google/genai": "https://esm.sh/@google/genai@^1.34.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
